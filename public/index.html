@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="校園像素風互動式劇情遊戲：三週期末生存挑戰"
+    />
+    <title>期末生存指南：21 DAYS</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Noto+Sans+TC:wght@400;600;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="scanlines" aria-hidden="true"></div>
+    <main class="app-shell">
+      <section id="lobbyScreen" class="screen active lobby-screen">
+        <div class="lobby-grid">
+          <div class="title-block">
+            <p class="eyebrow">CAMPUS SURVIVAL SYSTEM // ONLINE</p>
+            <h1>期末生存指南</h1>
+            <div class="title-row">
+              <span>21</span>
+              <strong>DAYS</strong>
+            </div>
+            <p class="subtitle">校園像素風互動式劇情遊戲</p>
+          </div>
+
+          <nav class="lobby-menu" aria-label="主選單">
+            <button class="menu-button primary" data-action="new-game">
+              <span>01</span>開始遊戲
+            </button>
+            <button class="menu-button" data-action="continue-game">
+              <span>02</span>繼續遊戲
+            </button>
+            <button class="menu-button" data-screen="aboutScreen">
+              <span>03</span>製作者介紹
+            </button>
+            <button class="menu-button" data-screen="courseScreen">
+              <span>04</span>本學期上課內容
+            </button>
+            <button class="menu-button" data-screen="projectScreen">
+              <span>05</span>期末專題介紹
+            </button>
+            <button class="menu-button" data-screen="danmakuScreen">
+              <span>06</span>彈幕管理
+            </button>
+            <button class="menu-button" data-screen="collectionScreen">
+              <span>07</span>結局收藏
+            </button>
+          </nav>
+        </div>
+        <div class="lobby-footer">
+          <span>CS3A // 侯佑諺</span>
+          <span class="blink">PRESS START TO SURVIVE</span>
+          <span>v1.0.0</span>
+        </div>
+      </section>
+
+      <section id="aboutScreen" class="screen info-screen">
+        <header class="section-header">
+          <div>
+            <p class="eyebrow">PLAYER PROFILE</p>
+            <h2>製作者介紹</h2>
+          </div>
+          <button class="back-button" data-screen="lobbyScreen">← 返回 Lobby</button>
+        </header>
+        <div class="profile-card pixel-panel">
+          <div class="avatar-placeholder">
+            <div class="pixel-face">ಠ_ಠ</div>
+            <span>PLAYER 01</span>
+          </div>
+          <dl class="profile-list">
+            <div><dt>姓名</dt><dd>侯佑諺</dd></div>
+            <div><dt>系級</dt><dd>資工三甲</dd></div>
+            <div><dt>個人簡介</dt><dd>是一個普通大學生，不太愛社交。</dd></div>
+            <div><dt>興趣</dt><dd>玩遊戲</dd></div>
+            <div><dt>學習目標</dt><dd>For Fun</dd></div>
+          </dl>
+        </div>
+      </section>
+
+      <section id="courseScreen" class="screen info-screen">
+        <header class="section-header">
+          <div>
+            <p class="eyebrow">SEMESTER LOG</p>
+            <h2>本學期上課內容</h2>
+          </div>
+          <button class="back-button" data-screen="lobbyScreen">← 返回 Lobby</button>
+        </header>
+        <div id="courseGrid" class="card-grid"></div>
+      </section>
+
+      <section id="projectScreen" class="screen info-screen">
+        <header class="section-header">
+          <div>
+            <p class="eyebrow">FINAL PROJECT</p>
+            <h2>期末專題介紹</h2>
+          </div>
+          <button class="back-button" data-screen="lobbyScreen">← 返回 Lobby</button>
+        </header>
+        <div class="project-layout">
+          <article class="pixel-panel project-copy">
+            <span class="status-badge">MVP BUILD</span>
+            <h3>三週期末生存挑戰</h3>
+            <p>
+              本網站結合個人網站與視覺小說玩法。玩家要在 21
+              天內安排校園生活，在體力、壓力、金錢與時間之間做選擇，完成期末專題及學業要求。
+            </p>
+            <p>
+              遊戲包含劇情選項、場景切換、數值系統、商店、時間限制、自動存檔、結局判定與 MongoDB
+              彈幕資料庫。
+            </p>
+          </article>
+          <div id="featureGrid" class="feature-grid"></div>
+        </div>
+      </section>
+
+      <section id="danmakuScreen" class="screen info-screen">
+        <header class="section-header">
+          <div>
+            <p class="eyebrow">LIVE MESSAGE DATABASE</p>
+            <h2>彈幕管理</h2>
+          </div>
+          <button class="back-button" data-screen="lobbyScreen">← 返回 Lobby</button>
+        </header>
+        <div class="danmaku-layout">
+          <form id="danmakuForm" class="pixel-panel form-panel">
+            <div id="danmakuStorageStatus" class="storage-status checking">
+              正在檢查彈幕資料庫…
+            </div>
+            <label>
+              暱稱
+              <input name="name" maxlength="20" required placeholder="輸入暱稱" />
+            </label>
+            <label>
+              彈幕內容
+              <input name="content" maxlength="80" required placeholder="期末加油！" />
+            </label>
+            <div class="form-row">
+              <label>
+                顏色
+                <input name="color" type="color" value="#55f7d2" />
+              </label>
+              <label>
+                出現天數
+                <input name="day" type="number" min="1" max="21" value="1" required />
+              </label>
+            </div>
+            <button id="danmakuSubmitButton" class="neon-button" type="submit">傳送彈幕</button>
+            <p id="danmakuFormMessage" class="form-message"></p>
+          </form>
+          <div class="pixel-panel danmaku-list-panel">
+            <div class="panel-title">
+              <h3>最新訊息</h3>
+              <button id="refreshDanmaku" class="small-button">重新整理</button>
+            </div>
+            <div id="danmakuList" class="danmaku-list"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="collectionScreen" class="screen info-screen">
+        <header class="section-header">
+          <div>
+            <p class="eyebrow">ENDING ARCHIVE</p>
+            <h2>結局收藏</h2>
+          </div>
+          <button class="back-button" data-screen="lobbyScreen">← 返回 Lobby</button>
+        </header>
+        <div id="endingCollection" class="ending-collection"></div>
+      </section>
+
+      <section id="gameScreen" class="screen game-screen">
+        <header class="game-header">
+          <div class="day-display">
+            <small>DEADLINE COUNTDOWN</small>
+            <strong>DAY <span id="dayValue">01</span> / 21</strong>
+            <small>MODE // <span id="difficultyValue">普通</span></small>
+          </div>
+          <div id="statsBar" class="stats-bar"></div>
+          <button class="exit-button" data-screen="lobbyScreen">Lobby</button>
+        </header>
+
+        <div id="gameScene" class="scene time-morning">
+          <div class="scene-overlay"></div>
+          <div id="sceneBg" class="scene-bg scene-room" aria-hidden="true">
+            <div class="pixel-building"></div>
+            <div class="pixel-ground"></div>
+          </div>
+          <div class="day-sky-overlay" aria-hidden="true"></div>
+          <img
+            id="roomCharacter"
+            class="room-character character-cg"
+            src="assets/images/characters/player_computer.png"
+            alt="主角狀態"
+          />
+          <div id="danmakuStage" class="danmaku-stage" aria-label="當日彈幕"></div>
+          <div class="scene-label">
+            <span>LOCATION</span>
+            <strong id="sceneName">房間 / LOBBY</strong>
+          </div>
+          <aside class="action-panel">
+            <p>SELECT ACTION</p>
+            <div id="actionButtons" class="action-buttons"></div>
+            <div class="action-counter">
+              今日剩餘行動 <strong id="actionsLeft">4</strong> / 4
+            </div>
+          </aside>
+          <div class="dialogue-box">
+            <div id="speakerName" class="speaker-name">SYSTEM</div>
+            <p id="dialogueText">距離期末只剩 21 天。你能在爆炸之前完成一切嗎？</p>
+            <button id="dialogueNext" class="dialogue-next" aria-label="下一句">▼</button>
+          </div>
+        </div>
+      </section>
+
+      <section id="endingScreen" class="screen ending-screen">
+        <div class="ending-card pixel-panel">
+          <p class="eyebrow">FINAL RESULT</p>
+          <div id="endingGrade" class="ending-grade">A</div>
+          <h2 id="endingTitle">100% ALL PASS</h2>
+          <p id="endingDescription"></p>
+          <div id="endingStats" class="ending-stats"></div>
+          <button class="neon-button" data-screen="lobbyScreen">返回 Lobby</button>
+        </div>
+      </section>
+    </main>
+
+    <div id="nameModal" class="modal" aria-hidden="true">
+      <form id="nameForm" class="modal-card pixel-panel">
+        <p class="eyebrow">NEW GAME</p>
+        <h2>建立新遊戲</h2>
+        <input id="playerNameInput" maxlength="30" value="侯佑諺" required />
+        <label class="difficulty-label" for="difficultySelect">遊戲難度</label>
+        <select id="difficultySelect">
+          <option value="easy">簡單：消耗較低、週目標較寬鬆</option>
+          <option value="normal" selected>普通：標準期末生存體驗</option>
+          <option value="hard">困難：消耗更高、週目標更嚴格</option>
+        </select>
+        <div class="modal-actions">
+          <button type="button" class="small-button" id="cancelNameModal">取消</button>
+          <button type="submit" class="neon-button">進入遊戲</button>
+        </div>
+      </form>
+    </div>
+
+    <div id="choiceModal" class="modal" aria-hidden="true">
+      <div class="modal-card pixel-panel">
+        <p class="eyebrow">RANDOM NPC EVENT</p>
+        <h2 id="choiceTitle">突發事件</h2>
+        <p id="choiceDescription"></p>
+        <div id="choiceButtons" class="choice-buttons"></div>
+      </div>
+    </div>
+
+    <div id="tutorialOverlay" class="tutorial-overlay" aria-hidden="true">
+      <div class="tutorial-card pixel-panel">
+        <p class="eyebrow">FIRST PLAY GUIDE</p>
+        <div id="tutorialStep" class="tutorial-step">1 / 5</div>
+        <h2 id="tutorialTitle">歡迎來到期末生存挑戰</h2>
+        <p id="tutorialText"></p>
+        <div class="modal-actions">
+          <button id="skipTutorial" class="small-button" type="button">略過教學</button>
+          <button id="nextTutorial" class="neon-button" type="button">下一步</button>
+        </div>
+      </div>
+    </div>
+
+    <button id="audioToggle" class="audio-toggle" type="button">♫ 音樂：開</button>
+    <audio id="backgroundMusic" src="assets/audio/background.mp3" loop preload="auto"></audio>
+    <div id="timeTransition" class="time-transition" aria-live="polite">
+      <span id="timeTransitionDay">第 1 天</span>
+      <strong id="timeTransitionPeriod">早晨</strong>
+    </div>
+    <div id="toast" class="toast" role="status"></div>
+    <script src="script.js"></script>
+  </body>
+</html>
