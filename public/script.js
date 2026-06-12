@@ -766,6 +766,7 @@ async function triggerNpcEvent() {
     {
       title: "同學的邀約",
       description: "同學邀你去吃宵夜，要一起去嗎？",
+      allowedPeriodIndexes: [3],
       choices: [
         {
           label: "一起去",
@@ -813,7 +814,17 @@ async function triggerNpcEvent() {
     }
   ];
 
-  const event = events[Math.floor(Math.random() * events.length)];
+  const completedPeriodIndex = clamp(
+    MAX_ACTIONS - gameState.actionsLeft - 1,
+    0,
+    TIME_PERIODS.length - 1
+  );
+  const eligibleEvents = events.filter((event) =>
+    !event.allowedPeriodIndexes ||
+    event.allowedPeriodIndexes.includes(completedPeriodIndex)
+  );
+  if (!eligibleEvents.length) return;
+  const event = eligibleEvents[Math.floor(Math.random() * eligibleEvents.length)];
   await showChoiceEvent(event);
 }
 
@@ -1085,7 +1096,9 @@ async function openLoadMenu(fromLobby) {
   renderActionMenu([
     ...slots.map(({ slot, data }) => ({
       label: `存檔 ${slot}${slot === 1 ? " / AUTO" : ""}`,
-      detail: data ? `DAY ${data.day}` : "NO DATA",
+      detail: data
+        ? `DAY ${data.day} / 剩餘 ${Number.isInteger(data.actionsLeft) ? data.actionsLeft : MAX_ACTIONS} 次`
+        : "NO DATA",
       handler: data
         ? () => loadGame(slot)
         : () => setDialogue("LOAD SYSTEM", `存檔 ${slot}：NO DATA`),
@@ -1106,11 +1119,18 @@ async function loadGame(slot) {
     if (!response.ok) throw new Error("讀取失敗");
     const save = await response.json();
     playSound("load");
-    gameState = { ...defaultState, ...save, actionsLeft: MAX_ACTIONS };
+    const savedActionsLeft = Number.isInteger(save.actionsLeft)
+      ? clamp(save.actionsLeft, 0, MAX_ACTIONS)
+      : MAX_ACTIONS;
+    gameState = { ...defaultState, ...save, actionsLeft: savedActionsLeft };
     setCharacterState(gameState.currentCharacterState);
-    setDialogue("LOAD SYSTEM", `已載入存檔 ${slot}：DAY ${gameState.day}。`);
+    setDialogue(
+      "LOAD SYSTEM",
+      `已載入存檔 ${slot}：DAY ${gameState.day}，剩餘 ${gameState.actionsLeft} 次行動。`
+    );
     renderGame();
-    await showTimeTransition(gameState.day, TIME_PERIODS[0]);
+    const periodIndex = clamp(MAX_ACTIONS - gameState.actionsLeft, 0, TIME_PERIODS.length - 1);
+    await showTimeTransition(gameState.day, TIME_PERIODS[periodIndex]);
   } catch (error) {
     setDialogue("LOAD SYSTEM", "無法連接存檔伺服器。");
   }
@@ -1175,6 +1195,7 @@ async function saveGame(slot = 1, automatic = false) {
     slot,
     currentScene: gameState.currentScene,
     day: gameState.day,
+    actionsLeft: gameState.actionsLeft,
     energy: gameState.energy,
     stress: gameState.stress,
     money: gameState.money,

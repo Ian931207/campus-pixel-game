@@ -24,6 +24,12 @@ const saveSchema = new mongoose.Schema(
       min: 1,
       default: 1
     },
+    actionsLeft: {
+      type: Number,
+      min: 0,
+      max: 4,
+      default: 4
+    },
     energy: {
       type: Number,
       min: 0,

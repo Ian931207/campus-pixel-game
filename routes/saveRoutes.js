@@ -9,6 +9,7 @@ const allowedFields = [
   "slot",
   "currentScene",
   "day",
+  "actionsLeft",
   "energy",
   "stress",
   "money",
