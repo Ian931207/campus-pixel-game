@@ -67,6 +67,8 @@ let dialogueQueue = [];
 let toastTimer;
 let audioContext;
 let audioEnabled = localStorage.getItem("campusAudioEnabled") !== "false";
+let musicVolume = Number(localStorage.getItem("campusMusicVolume") ?? 0.28);
+let sfxVolume = Number(localStorage.getItem("campusSfxVolume") ?? 0.8);
 let tutorialIndex = 0;
 const tutorialSteps = [
   ["歡迎來到期末生存挑戰", "你有 21 天完成專題與學業目標。每天共有四個行動時段。"],
@@ -78,7 +80,10 @@ const tutorialSteps = [
 
 function setupAudio() {
   const music = document.querySelector("#backgroundMusic");
-  music.volume = 0.28;
+  music.volume = clamp(musicVolume, 0, 1);
+  document.querySelector("#musicVolume").value = Math.round(musicVolume * 100);
+  document.querySelector("#sfxVolume").value = Math.round(sfxVolume * 100);
+  updateVolumeLabels();
   updateAudioButton();
 }
 
@@ -100,7 +105,7 @@ function toggleAudio(event) {
 
 function updateAudioButton() {
   const button = document.querySelector("#audioToggle");
-  if (button) button.textContent = audioEnabled ? "♫ 音樂：開" : "♫ 音樂：關";
+  if (button) button.textContent = audioEnabled ? "全部開啟" : "全部靜音";
 }
 
 function playSound(type) {
@@ -122,11 +127,40 @@ function playSound(type) {
     oscillator.frequency.exponentialRampToValueAtTime(90, audioContext.currentTime + duration);
   }
   gain.gain.setValueAtTime(0.0001, audioContext.currentTime);
-  gain.gain.exponentialRampToValueAtTime(0.08, audioContext.currentTime + 0.015);
+  gain.gain.exponentialRampToValueAtTime(
+    Math.max(0.0001, 0.1 * sfxVolume),
+    audioContext.currentTime + 0.015
+  );
   gain.gain.exponentialRampToValueAtTime(0.0001, audioContext.currentTime + duration);
   oscillator.connect(gain).connect(audioContext.destination);
   oscillator.start();
   oscillator.stop(audioContext.currentTime + duration);
+}
+
+function toggleAudioPanel(event) {
+  event.stopPropagation();
+  const panel = document.querySelector("#audioPanel");
+  const isOpen = panel.classList.toggle("open");
+  panel.setAttribute("aria-hidden", String(!isOpen));
+}
+
+function updateMusicVolume(event) {
+  musicVolume = Number(event.target.value) / 100;
+  localStorage.setItem("campusMusicVolume", String(musicVolume));
+  document.querySelector("#backgroundMusic").volume = musicVolume;
+  updateVolumeLabels();
+  if (musicVolume > 0) ensureBackgroundMusic();
+}
+
+function updateSfxVolume(event) {
+  sfxVolume = Number(event.target.value) / 100;
+  localStorage.setItem("campusSfxVolume", String(sfxVolume));
+  updateVolumeLabels();
+}
+
+function updateVolumeLabels() {
+  document.querySelector("#musicVolumeValue").textContent = `${Math.round(musicVolume * 100)}%`;
+  document.querySelector("#sfxVolumeValue").textContent = `${Math.round(sfxVolume * 100)}%`;
 }
 
 function startTutorial() {
@@ -409,6 +443,9 @@ function bindNavigation() {
   document.querySelector("#dialogueNext").addEventListener("click", showNextDialogue);
   document.querySelector("#refreshDanmaku").addEventListener("click", loadDanmakuList);
   document.querySelector("#audioToggle").addEventListener("click", toggleAudio);
+  document.querySelector("#audioSettingsToggle").addEventListener("click", toggleAudioPanel);
+  document.querySelector("#musicVolume").addEventListener("input", updateMusicVolume);
+  document.querySelector("#sfxVolume").addEventListener("input", updateSfxVolume);
   document.querySelector("#nextTutorial").addEventListener("click", advanceTutorial);
   document.querySelector("#skipTutorial").addEventListener("click", finishTutorial);
 }

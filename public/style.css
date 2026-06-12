@@ -658,16 +658,66 @@ p {
   font-family: "DotGothic16", monospace;
 }
 
-.audio-toggle {
+.audio-controls {
   position: fixed;
   right: 18px;
   bottom: 18px;
   z-index: 350;
+}
+
+.audio-toggle {
   padding: 10px 14px;
   border: 1px solid var(--cyan);
   color: var(--cyan);
   background: rgba(7, 10, 18, 0.92);
   cursor: pointer;
+}
+
+.audio-panel {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 10px);
+  display: none;
+  width: 280px;
+  padding: 18px;
+  border: 2px solid var(--line);
+  background: rgba(7, 10, 18, 0.97);
+  box-shadow: var(--shadow);
+}
+
+.audio-panel.open {
+  display: grid;
+  gap: 16px;
+}
+
+.audio-panel-header,
+.audio-panel label span {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+
+.audio-panel-header strong {
+  color: var(--cyan);
+  font-family: "DotGothic16", monospace;
+}
+
+.audio-panel label {
+  display: grid;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.audio-panel input[type="range"] {
+  width: 100%;
+  accent-color: var(--cyan);
+  cursor: pointer;
+}
+
+.audio-panel b {
+  color: var(--yellow);
 }
 
 .game-screen {

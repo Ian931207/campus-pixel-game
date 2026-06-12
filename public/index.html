@@ -272,7 +272,23 @@
       </div>
     </div>
 
-    <button id="audioToggle" class="audio-toggle" type="button">♫ 音樂：開</button>
+    <div id="audioControls" class="audio-controls">
+      <button id="audioSettingsToggle" class="audio-toggle" type="button">♫ 聲音設定</button>
+      <div id="audioPanel" class="audio-panel" aria-hidden="true">
+        <div class="audio-panel-header">
+          <strong>音量設定</strong>
+          <button id="audioToggle" class="small-button" type="button">全部開啟</button>
+        </div>
+        <label>
+          <span>背景音樂 <b id="musicVolumeValue">28%</b></span>
+          <input id="musicVolume" type="range" min="0" max="100" value="28" />
+        </label>
+        <label>
+          <span>操作音效 <b id="sfxVolumeValue">80%</b></span>
+          <input id="sfxVolume" type="range" min="0" max="100" value="80" />
+        </label>
+      </div>
+    </div>
     <audio id="backgroundMusic" src="assets/audio/background.mp3" loop preload="auto"></audio>
     <div id="timeTransition" class="time-transition" aria-live="polite">
       <span id="timeTransitionDay">第 1 天</span>
