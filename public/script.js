@@ -1328,6 +1328,7 @@ function renderEndingCollection() {
 async function submitDanmaku(event) {
   event.preventDefault();
   const submitButton = document.querySelector("#danmakuSubmitButton");
+  const formElement = event.currentTarget;
   const form = new FormData(event.currentTarget);
   const payload = {
     name: form.get("name"),
@@ -1351,29 +1352,68 @@ async function submitDanmaku(event) {
     message.textContent = data.persistent
       ? "彈幕已寫入 MongoDB，重新整理或重新上線後仍會存在。"
       : "彈幕已送出，但目前只存於伺服器記憶體，重新啟動後會消失。";
-    event.currentTarget.reset();
-    event.currentTarget.elements.color.value = "#55f7d2";
-    event.currentTarget.elements.day.value = "1";
+    resetDanmakuForm(formElement);
     await loadDanmakuList();
+    revealDanmakuListOnMobile();
     if (gameState.day === payload.day && gameState.currentScene === "room") {
       await loadDayDanmaku();
     }
   } catch (error) {
-    message.textContent =
-      error instanceof TypeError
-        ? "無法連接伺服器，彈幕尚未送出。請確認網站是由 npm start 啟動。"
-        : error.message || "彈幕新增失敗";
+    const wasSaved = await verifyDanmakuWasSaved(payload);
+    if (wasSaved) {
+      message.textContent = "彈幕已成功儲存。手機連線回應較慢，但資料已寫入 MongoDB。";
+      resetDanmakuForm(formElement);
+      await loadDanmakuList();
+      revealDanmakuListOnMobile();
+    } else {
+      message.textContent =
+        error instanceof TypeError
+          ? "目前無法確認伺服器回應，彈幕尚未送出，請稍後再試。"
+          : error.message || "彈幕新增失敗";
+    }
   } finally {
     submitButton.disabled = false;
     submitButton.textContent = "傳送彈幕";
   }
 }
 
+function resetDanmakuForm(formElement) {
+  formElement.reset();
+  formElement.elements.color.value = "#55f7d2";
+  formElement.elements.day.value = "1";
+}
+
+async function verifyDanmakuWasSaved(payload) {
+  try {
+    const response = await fetch("/api/danmaku", {
+      cache: "no-store",
+      headers: { Accept: "application/json" }
+    });
+    if (!response.ok) return false;
+    const items = await response.json();
+    return items.some((item) =>
+      item.name === payload.name &&
+      item.content === payload.content &&
+      Number(item.day) === Number(payload.day)
+    );
+  } catch (error) {
+    return false;
+  }
+}
+
+function revealDanmakuListOnMobile() {
+  if (!window.matchMedia("(max-width: 760px)").matches) return;
+  document.querySelector(".danmaku-list-panel")?.scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+}
+
 async function loadDanmakuList() {
   const list = document.querySelector("#danmakuList");
   list.innerHTML = "<p>讀取中...</p>";
   try {
-    const response = await fetch("/api/danmaku");
+    const response = await fetch("/api/danmaku", { cache: "no-store" });
     if (!response.ok) throw new Error("讀取失敗");
     const items = await response.json();
     list.innerHTML = items.length
