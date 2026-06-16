@@ -979,8 +979,16 @@ p {
   background: linear-gradient(135deg, #2d2439, #563d51 52%, #a86a68);
 }
 
+.scene-teach {
+  background-image: url("assets/images/scenes/teach.png");
+}
+
+.scene-teacher {
+  background-image: url("assets/images/scenes/teacher.png");
+}
+
 .scene-library {
-  background: linear-gradient(135deg, #241d2a, #46333d 48%, #81634a);
+  background-image: url("assets/images/scenes/libary.png");
 }
 
 .scene-store {

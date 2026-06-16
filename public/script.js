@@ -199,6 +199,8 @@ const sceneData = {
   gate: { name: "校門口", className: "scene-gate" },
   computer: { name: "電腦棟", className: "scene-computer" },
   classroom: { name: "教學棟", className: "scene-classroom" },
+  teaching: { name: "上課中", className: "scene-teach" },
+  professor: { name: "老師研究室", className: "scene-teacher" },
   library: { name: "圖書館", className: "scene-library" },
   store: { name: "校園超商", className: "scene-store" }
 };
@@ -257,7 +259,7 @@ const actions = {
   },
   class: {
     label: "上課",
-    scene: "classroom",
+    scene: "teaching",
     run() {
       const studyGain = 6 + knowledgeBonus();
       const knowledgeGain = boostedKnowledge(10);
@@ -339,7 +341,7 @@ const actions = {
   },
   professor: {
     label: "找老師討論",
-    scene: "computer",
+    scene: "professor",
     async run() {
       applyEffects({ energy: -8, stress: 5, happiness: -1 });
       setDialogue("老師", "讓我看看你目前的狀況……");
