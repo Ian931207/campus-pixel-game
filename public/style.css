@@ -991,6 +991,24 @@ p {
   background-image: url("assets/images/scenes/libary.png");
 }
 
+.scene-teach,
+.scene-teacher,
+.scene-library {
+  background-color: #101827;
+  background-position: top center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+.scene-teach .pixel-building,
+.scene-teach .pixel-ground,
+.scene-teacher .pixel-building,
+.scene-teacher .pixel-ground,
+.scene-library .pixel-building,
+.scene-library .pixel-ground {
+  display: none;
+}
+
 .scene-store {
   background: linear-gradient(135deg, #0d2f3b, #15515a 50%, #da496e);
 }
