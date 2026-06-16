@@ -995,9 +995,15 @@ p {
 .scene-teacher,
 .scene-library {
   background-color: #101827;
-  background-position: top center;
+  background-position: center calc(100% - 205px);
   background-repeat: no-repeat;
-  background-size: contain;
+  background-size: min(100vw, 1440px) auto;
+}
+
+.scene-bg.scene-teach ~ .day-sky-overlay,
+.scene-bg.scene-teacher ~ .day-sky-overlay,
+.scene-bg.scene-library ~ .day-sky-overlay {
+  display: none;
 }
 
 .scene-teach .pixel-building,
