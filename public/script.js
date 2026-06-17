@@ -210,14 +210,14 @@ const actions = {
     label: "寫專題",
     scene: "computer",
     run() {
-      gameState.projectActionCount += 1;
-      const gain = 10 + knowledgeBonus();
-      applyEffects({ projectProgress: gain, stress: 12, energy: -15, happiness: -2 });
-      setDialogue(gameState.playerName, `專題推進了 ${gain}%；知識讓你處理功能更有效率。`);
-      if (Math.random() < badEventChance(0.22)) {
-        applyEffects({ projectProgress: -6, energy: -8, stress: 14, happiness: -8 });
-        queueDialogue("RANDOM EVENT", "突然出現嚴重 Bug！專題 -6、體力 -8、壓力 +14、開心 -8。");
-      }
+      runProjectWork();
+    }
+  },
+  roomProject: {
+    label: "寫專題",
+    scene: "room",
+    run() {
+      runProjectWork();
     }
   },
   research: {
@@ -353,6 +353,17 @@ const actions = {
     }
   }
 };
+
+function runProjectWork() {
+  gameState.projectActionCount += 1;
+  const gain = 10 + knowledgeBonus();
+  applyEffects({ projectProgress: gain, stress: 12, energy: -15, happiness: -2 });
+  setDialogue(gameState.playerName, `專題推進了 ${gain}%；知識讓你處理功能更有效率。`);
+  if (Math.random() < badEventChance(0.22)) {
+    applyEffects({ projectProgress: -6, energy: -8, stress: 14, happiness: -8 });
+    queueDialogue("RANDOM EVENT", "突然出現嚴重 Bug！專題 -6、體力 -8、壓力 +14、開心 -8。");
+  }
+}
 
 const storeItems = [
   { name: "飯糰", price: 45, effects: { energy: 15 } },
@@ -610,7 +621,7 @@ function openHomeMenu() {
     { label: "睡覺", action: "sleep" },
     { label: "洗澡", action: "shower" },
     { label: "打遊戲", action: "game" },
-    { label: "寫專題", action: "project" },
+    { label: "寫專題", action: "roomProject" },
     { label: "上網查資料", action: "research" },
     { label: "讀書", action: "homeReading" },
     backMenuItem()
@@ -724,6 +735,7 @@ function randomRoomCharacterState() {
 function setCharacterForAction(actionId) {
   const stateMap = {
     project: "computer",
+    roomProject: "computer",
     research: "computer",
     game: "computer",
     professor: "computer",
