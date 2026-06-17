@@ -450,6 +450,8 @@ function bindNavigation() {
   document.querySelector("#sfxVolume").addEventListener("input", updateSfxVolume);
   document.querySelector("#nextTutorial").addEventListener("click", advanceTutorial);
   document.querySelector("#skipTutorial").addEventListener("click", finishTutorial);
+  document.querySelector("#demoEndingButton").addEventListener("click", runEndingDemo);
+  document.querySelector("#unlockAllEndingsButton").addEventListener("click", unlockAllEndings);
 }
 
 function bindForms() {
@@ -1331,6 +1333,39 @@ function getUnlockedEndings() {
     ...(gameState.unlockedEndings || []),
     ...JSON.parse(localStorage.getItem("campusUnlockedEndings") || "[]")
   ]);
+}
+
+function runEndingDemo() {
+  playSound("load");
+  gameState = {
+    ...defaultState,
+    playerName: localStorage.getItem("campusGamePlayer") || gameState.playerName || "Demo Player",
+    day: MAX_DAY,
+    actionsLeft: 0,
+    energy: 76,
+    stress: 28,
+    money: 1280,
+    projectProgress: 96,
+    studyProgress: 88,
+    knowledge: 72,
+    happiness: 80,
+    projectActionCount: 8,
+    currentScene: "room",
+    currentCharacterState: "computer",
+    unlockedEndings: [...getUnlockedEndings()]
+  };
+  setCharacterState(gameState.currentCharacterState);
+  showEnding("deadline");
+}
+
+function unlockAllEndings() {
+  const allCodes = ENDING_CATALOG.map(([code]) => code);
+  gameState.unlockedEndings = [...new Set([...(gameState.unlockedEndings || []), ...allCodes])];
+  localStorage.setItem("campusUnlockedEndings", JSON.stringify(gameState.unlockedEndings));
+  playSound("save");
+  renderEndingCollection();
+  saveGame(1, true);
+  showToast("已快速解鎖所有結局收藏。");
 }
 
 function renderEndingCollection() {

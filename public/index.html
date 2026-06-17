@@ -109,13 +109,19 @@
             <span class="status-badge">MVP BUILD</span>
             <h3>三週期末生存挑戰</h3>
             <p>
-              本網站結合個人網站與視覺小說玩法。玩家要在 21
-              天內安排校園生活，在體力、壓力、金錢與時間之間做選擇，完成期末專題及學業要求。
+              本網站結合個人網站、像素風場景與視覺小說玩法。玩家要在 21
+              天內安排每天四個行動時段，在體力、壓力、金錢、知識與開心值之間做取捨，完成期末專題及學業要求。
             </p>
             <p>
-              遊戲包含劇情選項、場景切換、數值系統、商店、時間限制、自動存檔、結局判定與 MongoDB
-              彈幕資料庫。
+              遊戲包含劇情選項、場景切換、數值成長、超商道具、隨機事件、時間濾鏡、自動存檔、結局判定與 MongoDB
+              彈幕資料庫，讓課程中的前端互動、API 與 CRUD 實作整合成完整作品。
             </p>
+            <div class="system-architecture">
+              <div><strong>前端</strong><span>HTML / CSS / JavaScript 負責畫面、遊戲邏輯、動畫與音效。</span></div>
+              <div><strong>後端</strong><span>Node.js + Express 提供存檔與彈幕 API。</span></div>
+              <div><strong>資料庫</strong><span>MongoDB 儲存玩家存檔、彈幕與可延伸資料。</span></div>
+              <div><strong>部署</strong><span>GitHub 管理版本，Render 部署線上網站。</span></div>
+            </div>
           </article>
           <div id="featureGrid" class="feature-grid"></div>
         </div>
@@ -173,6 +179,16 @@
           </div>
           <button class="back-button" data-screen="lobbyScreen">← 返回 Lobby</button>
         </header>
+        <div class="collection-toolbar pixel-panel">
+          <div>
+            <strong>展示用工具</strong>
+            <p>報告時可快速展示結局判定與收藏功能，不需要完整遊玩 21 天。</p>
+          </div>
+          <div class="collection-actions">
+            <button id="demoEndingButton" class="neon-button" type="button">快速 Demo 結局</button>
+            <button id="unlockAllEndingsButton" class="ghost-button" type="button">快速解鎖全部</button>
+          </div>
+        </div>
         <div id="endingCollection" class="ending-collection"></div>
       </section>
 

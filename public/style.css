@@ -417,6 +417,31 @@ p {
   font-size: 2rem;
 }
 
+.system-architecture {
+  display: grid;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.system-architecture div {
+  display: grid;
+  grid-template-columns: 82px 1fr;
+  gap: 12px;
+  padding: 12px 14px;
+  border-left: 4px solid var(--cyan);
+  background: rgba(85, 247, 210, 0.07);
+}
+
+.system-architecture strong {
+  color: var(--cyan);
+  font-family: "DotGothic16", monospace;
+}
+
+.system-architecture span {
+  color: #c6d7e5;
+  line-height: 1.6;
+}
+
 .status-badge {
   padding: 6px 10px;
   color: #07110f;
@@ -608,6 +633,35 @@ p {
   gap: 18px;
   max-width: 1100px;
   margin: 0 auto;
+}
+
+.collection-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  max-width: 1100px;
+  margin: 0 auto 22px;
+  padding: 22px 26px;
+}
+
+.collection-toolbar strong {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--cyan);
+  font-family: "DotGothic16", monospace;
+  font-size: 1.25rem;
+}
+
+.collection-toolbar p {
+  margin: 0;
+  color: #9fb2c3;
+}
+
+.collection-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
 }
 
 .collection-card {
@@ -1451,6 +1505,19 @@ p {
   .profile-list div {
     grid-template-columns: 1fr;
     gap: 8px;
+  }
+
+  .system-architecture div {
+    grid-template-columns: 1fr;
+  }
+
+  .collection-toolbar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .collection-actions {
+    flex-direction: column;
   }
 
   .game-header {
