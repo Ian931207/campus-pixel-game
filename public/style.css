@@ -402,14 +402,18 @@ p {
 
 .project-layout {
   display: grid;
-  grid-template-columns: 0.85fr 1.15fr;
-  gap: 26px;
+  grid-template-columns: 1fr;
+  gap: 22px;
   max-width: 1200px;
   margin: 0 auto;
 }
 
 .project-copy {
-  padding: 36px;
+  display: grid;
+  grid-template-columns: minmax(280px, 0.9fr) minmax(360px, 1.1fr);
+  gap: 28px;
+  padding: 28px 32px;
+  align-items: start;
 }
 
 .project-copy h3 {
@@ -419,13 +423,14 @@ p {
 
 .system-architecture {
   display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
-  margin-top: 24px;
+  margin-top: 0;
 }
 
 .system-architecture div {
   display: grid;
-  grid-template-columns: 82px 1fr;
+  grid-template-columns: 70px 1fr;
   gap: 12px;
   padding: 12px 14px;
   border-left: 4px solid var(--cyan);
@@ -451,7 +456,12 @@ p {
 }
 
 .feature-card {
-  min-height: 135px;
+  min-height: 150px;
+  padding: 22px;
+}
+
+.project-layout .feature-grid {
+  grid-template-columns: repeat(3, minmax(180px, 1fr));
 }
 
 .feature-card span {
@@ -1420,6 +1430,15 @@ p {
     grid-template-columns: 1fr;
   }
 
+  .project-copy,
+  .project-layout .feature-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .system-architecture {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .lobby-grid {
     padding-top: 50px;
   }
@@ -1508,6 +1527,10 @@ p {
   }
 
   .system-architecture div {
+    grid-template-columns: 1fr;
+  }
+
+  .system-architecture {
     grid-template-columns: 1fr;
   }
 
